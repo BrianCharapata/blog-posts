@@ -1,27 +1,15 @@
-const express = require('express');
-const morgan = require('morgan');
+const express = require("express");
+const morgan = require("morgan");
 
+const blogPostsRouter = require("./blogPostsRouter");
 const app = express();
 
-const shoppingListRouter = require('./shoppingListRouter');
-const recipesRouter = require('./recipesRouter');
+app.use(morgan("common"));
+app.use(express.json());
 
-// log the http layer
-app.use(morgan('common'));
-
-app.use(express.static('public'));
-
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/views/index.html');
-});
-
-
-// when requests come into `/shopping-list` or
-// `/recipes`, we'll route them to the express
-// router instances we've imported. Remember,
-// these router instances act as modular, mini-express apps.
-app.use('/shopping-list', shoppingListRouter);
-app.use('/recipes', recipesRouter);
+// you need to import `blogPostsRouter` router and route
+// requests to HTTP requests to `/blog-posts` to `blogPostsRouter`
+app.use("/blog-posts", blogPostsRouter);
 
 app.listen(process.env.PORT || 8080, () => {
   console.log(`Your app is listening on port ${process.env.PORT || 8080}`);
